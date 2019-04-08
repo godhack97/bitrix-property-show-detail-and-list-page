@@ -1,4 +1,5 @@
 <?php
+$IBLOCK_ID = 17;
 $DETAIL_PAGE_SHOW_ENABLED = 'Y';
 $LIST_PAGE_SHOW_ENABLED = 'Y';
 \Bitrix\Main\Loader::includeMOdule('iblock');
@@ -17,7 +18,6 @@ foreach ($all_property_value as $item) {
 }
 
 if (CModule::IncludeModule("iblock")) { //получаем все свойства инфоблока
-    $IBLOCK_ID = 17;
     $properties = CIBlockProperty::GetList(Array("sort" => "asc", "name" => "asc"), Array("ACTIVE" => "Y", "IBLOCK_ID" => $IBLOCK_ID));
     $arrIdProp = array();
     while ($prop_fields = $properties->GetNext()) {
@@ -26,10 +26,10 @@ if (CModule::IncludeModule("iblock")) { //получаем все свойств
 }
 
 foreach ($arrIdProp as $item) {
-    if ($DETAIL_PAGE_SHOW_ENABLED == 'Y') {
-        if (!empty($DETAIL_PAGE_SHOW[$item])) {
-            if ($DETAIL_PAGE_SHOW[$item]['IS_ENABLED'] == 'N') {
-                $dbData = \Bitrix\Iblock\PropertyFeatureTable::Update($DETAIL_PAGE_SHOW[$item]['ID'], [
+    if ($DETAIL_PAGE_SHOW_ENABLED == 'Y') { //если требуется всем свойствам добавить отображение на детальной странице
+        if (!empty($DETAIL_PAGE_SHOW[$item])) { // проверяем есть ли уже свойство в базе
+            if ($DETAIL_PAGE_SHOW[$item]['IS_ENABLED'] == 'N') { //Если оно отрицательное то изменяем его
+                \Bitrix\Iblock\PropertyFeatureTable::Update($DETAIL_PAGE_SHOW[$item]['ID'], [
                     'PROPERTY_ID' => $item,
                     'MODULE_ID' => 'iblock',
                     'FEATURE_ID' => 'DETAIL_PAGE_SHOW',
@@ -37,7 +37,7 @@ foreach ($arrIdProp as $item) {
                 ]);
             }
         } else {
-            $dbData = \Bitrix\Iblock\PropertyFeatureTable::Add([
+            \Bitrix\Iblock\PropertyFeatureTable::Add([
                 'PROPERTY_ID' => $item,
                 'MODULE_ID' => 'iblock',
                 'FEATURE_ID' => 'DETAIL_PAGE_SHOW',
@@ -47,7 +47,7 @@ foreach ($arrIdProp as $item) {
     } elseif ($DETAIL_PAGE_SHOW_ENABLED == 'N') {
         if (!empty($DETAIL_PAGE_SHOW[$item])) {
             if ($DETAIL_PAGE_SHOW[$item]['IS_ENABLED'] == 'Y') {
-                $dbData = \Bitrix\Iblock\PropertyFeatureTable::Update($DETAIL_PAGE_SHOW[$item]['ID'], [
+                \Bitrix\Iblock\PropertyFeatureTable::Update($DETAIL_PAGE_SHOW[$item]['ID'], [
                     'PROPERTY_ID' => $item,
                     'MODULE_ID' => 'iblock',
                     'FEATURE_ID' => 'DETAIL_PAGE_SHOW',
@@ -55,7 +55,7 @@ foreach ($arrIdProp as $item) {
                 ]);
             }
         } else {
-            $dbData = \Bitrix\Iblock\PropertyFeatureTable::Add([
+            \Bitrix\Iblock\PropertyFeatureTable::Add([
                 'PROPERTY_ID' => $item,
                 'MODULE_ID' => 'iblock',
                 'FEATURE_ID' => 'DETAIL_PAGE_SHOW',
@@ -66,7 +66,7 @@ foreach ($arrIdProp as $item) {
     if ($LIST_PAGE_SHOW_ENABLED == 'Y') {
         if (!empty($LIST_PAGE_SHOW[$item])) {
             if ($LIST_PAGE_SHOW[$item]['IS_ENABLED'] == 'N') {
-                $dbData = \Bitrix\Iblock\PropertyFeatureTable::Update($LIST_PAGE_SHOW[$item]['ID'], [
+                \Bitrix\Iblock\PropertyFeatureTable::Update($LIST_PAGE_SHOW[$item]['ID'], [
                     'PROPERTY_ID' => $item,
                     'MODULE_ID' => 'iblock',
                     'FEATURE_ID' => 'LIST_PAGE_SHOW',
@@ -74,7 +74,7 @@ foreach ($arrIdProp as $item) {
                 ]);
             }
         } else {
-            $dbData = \Bitrix\Iblock\PropertyFeatureTable::Add([
+            \Bitrix\Iblock\PropertyFeatureTable::Add([
                 'PROPERTY_ID' => $item,
                 'MODULE_ID' => 'iblock',
                 'FEATURE_ID' => 'LIST_PAGE_SHOW',
@@ -84,7 +84,7 @@ foreach ($arrIdProp as $item) {
     } elseif ($LIST_PAGE_SHOW_ENABLED == 'N') {
         if (!empty($LIST_PAGE_SHOW[$item])) {
             if ($LIST_PAGE_SHOW[$item]['IS_ENABLED'] == 'Y') {
-                $dbData = \Bitrix\Iblock\PropertyFeatureTable::Update($LIST_PAGE_SHOW[$item]['ID'], [
+                \Bitrix\Iblock\PropertyFeatureTable::Update($LIST_PAGE_SHOW[$item]['ID'], [
                     'PROPERTY_ID' => $item,
                     'MODULE_ID' => 'iblock',
                     'FEATURE_ID' => 'LIST_PAGE_SHOW',
@@ -92,7 +92,7 @@ foreach ($arrIdProp as $item) {
                 ]);
             }
         } else {
-            $dbData = \Bitrix\Iblock\PropertyFeatureTable::Add([
+             \Bitrix\Iblock\PropertyFeatureTable::Add([
                 'PROPERTY_ID' => $item,
                 'MODULE_ID' => 'iblock',
                 'FEATURE_ID' => 'LIST_PAGE_SHOW',
